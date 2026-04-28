@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adriya — Modern Heirloom Jewelry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Viaoda+Libre&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #1a1512;
+      background: #fff;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+    /* =============================================
+       CSS VARIABLES
+    ============================================= */
+    :root {
+      --dark: #1a1512;
+      --medium: #4a3f38;
+      --muted: #80736c;
+      --cream: #f5ede6;
+      --light-cream: #fbf7f4;
+      --border: #d9ccbe;
+      --pink: #ebb5d0;
+      --gray: #d9d9d9;
+      --side: 70px;
+      --max-w: 1440px;
+      --header-h: 180px; /* announcement(42) + nav-top(90) + cats(48) */
+    }
+
+    /* =============================================
+       ANNOUNCEMENT BAR
+    ============================================= */
+    .announcement-bar {
+      background: #000;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .announcement-bar__inner {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      overflow: hidden;
+    }
+    .announcement-bar p {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1.8px;
+      color: var(--cream);
+      white-space: nowrap;
+      padding: 0 var(--side);
+      animation: ticker 30s linear infinite;
+    }
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-40%); }
+    }
+    /* ticker runs on all screen sizes */
+
+    /* =============================================
+       SITE HEADER
+    ============================================= */
+    .site-header {
+      position: relative;
+      z-index: 1000;
+    }
+
+    /* NAV WRAPPER */
+    .nav-wrapper {
+      background: transparent;
+      transition: background 0.25s ease, box-shadow 0.25s ease;
+    }
+    .nav-wrapper:hover {
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+    }
+
+    /* NAV TOP ROW */
+    .nav-top {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 90px;
+      padding: 0 var(--side);
+    }
+    .nav-logo {
+      font-family: 'Viaoda Libre', serif;
+      font-size: 38px;
+      color: #fff;
+      transition: color 0.25s ease;
+      line-height: 1;
+    }
+    .nav-wrapper:hover .nav-logo { color: #000; }
+
+    .nav-search {
+      position: absolute;
+      left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer; padding: 4px 8px;
+    }
+    .nav-search span {
+      font-size: 14px; font-weight: 700;
+      color: #fff; transition: color 0.25s ease;
+    }
+    .nav-search svg path, .nav-search svg circle { stroke: #fff; transition: stroke 0.25s ease; }
+    .nav-wrapper:hover .nav-search span { color: #000; }
+    .nav-wrapper:hover .nav-search svg path,
+    .nav-wrapper:hover .nav-search svg circle { stroke: #000; }
+
+    .nav-actions {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-actions .icon-btn {
+      width: 28px; height: 28px; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .nav-actions svg path, .nav-actions svg circle { stroke: #fff; transition: stroke 0.25s ease; }
+    .nav-wrapper:hover .nav-actions svg path,
+    .nav-wrapper:hover .nav-actions svg circle { stroke: #000; }
+
+    /* Hamburger (mobile) */
+    .nav-hamburger {
+      display: none;
+      width: 28px; height: 28px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .nav-hamburger span {
+      display: block; height: 1.5px;
+      background: #fff; border-radius: 2px;
+      transition: background 0.25s ease;
+    }
+    .nav-wrapper:hover .nav-hamburger span { background: #000; }
+
+    /* NAV CATEGORIES BAR */
+    .nav-cats {
+      height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      transition: border-color 0.25s ease;
+      position: relative;
+    }
+    .nav-wrapper:hover .nav-cats { border-top-color: rgba(0,0,0,0.08); }
+
+    .nav-cats__list {
+      display: flex; align-items: center; gap: 93px;
+    }
+    .nav-cats__item { position: static; }
+    .nav-cats__item > a {
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 1.8px;
+      color: #fff; white-space: nowrap;
+      display: block; padding-bottom: 4px;
+      position: relative;
+      transition: color 0.25s ease;
+    }
+    .nav-wrapper:hover .nav-cats__item > a { color: #000; }
+
+    /* Active underline indicator */
+    .nav-cats__item > a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 2px;
+      background: currentColor;
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+    }
+    .nav-cats__item:hover > a::after,
+    .nav-cats__item.is-active > a::after { transform: scaleX(1); }
+
+    /* =============================================
+       MEGA DROPDOWNS
+    ============================================= */
+    .mega-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      background: #fff;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      padding: 28px var(--side) 36px;
+      opacity: 0; visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+      z-index: 999;
+    }
+    .nav-cats__item:hover .mega-dropdown {
+      opacity: 1; visibility: visible; transform: translateY(0);
+    }
+    /* Keep header white when dropdown is open */
+    .nav-cats__item:hover ~ * .nav-wrapper,
+    .nav-cats:hover .nav-wrapper { background: #fff; }
+
+    .dropdown-inner {
+      display: flex;
+      gap: 0;
+      align-items: flex-start;
+      width: 100%;
+      max-width: calc(var(--max-w) - 2 * var(--side));
+    }
+
+    /* Category name heading */
+    .dd-cat-heading {
+      font-size: 16px; font-weight: 700;
+      letter-spacing: 1.8px;
+      color: #000;
+      margin-bottom: 20px;
+    }
+
+    /* Column */
+    .dd-col {
+      display: flex; flex-direction: column;
+      margin-right: 52px;
+      flex-shrink: 0;
+    }
+    .dd-col:last-child { margin-right: 0; }
+
+    .dd-col-title {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #9b9b9b;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      min-height: 14px;
+    }
+
+    /* Items with thumbnail */
+    .dd-item {
+      display: flex; align-items: center;
+      gap: 9px; margin-bottom: 7px; cursor: pointer;
+    }
+    .dd-item__thumb {
+      width: 38px; height: 38px;
+      border-radius: 50%; overflow: hidden;
+      flex-shrink: 0; background: var(--gray);
+    }
+    .dd-item__thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .dd-item__label {
+      font-size: 13px; font-weight: 500;
+      letter-spacing: 0.43px; color: #000;
+      line-height: 1.5; transition: text-decoration 0.1s;
+    }
+    .dd-item:hover .dd-item__label { text-decoration: underline; }
+
+    /* Filter items (price/material) */
+    .dd-filter {
+      font-size: 13px; font-weight: 500;
+      letter-spacing: 0.43px; color: #000;
+      line-height: 1.5; margin-bottom: 7px;
+      cursor: pointer;
+    }
+    .dd-filter:hover { text-decoration: underline; }
+
+    /* Featured banners */
+    .dd-banners {
+      display: flex; gap: 16px;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    .dd-banner { width: 206px; }
+    .dd-banner__img {
+      width: 206px; height: 274px;
+      background: var(--gray);
+      overflow: hidden;
+    }
+    .dd-banner__img img { width: 100%; height: 100%; object-fit: cover; }
+    .dd-banner__caption {
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.396px; color: #000;
+      line-height: 1.5; margin-top: 12px;
+    }
+
+    /* =============================================
+       MOBILE MENU OVERLAY
+    ============================================= */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #fff; z-index: 999;
+      overflow-y: auto;
+      padding: 24px var(--side) 40px;
+      flex-direction: column;
+    }
+    .mobile-menu.is-open { display: flex; }
+    .mobile-menu__top {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 32px;
+    }
+    .mobile-menu__logo {
+      font-family: 'Viaoda Libre', serif;
+      font-size: 32px; color: #000;
+    }
+    .mobile-menu__close {
+      font-size: 24px; cursor: pointer; line-height: 1;
+    }
+    .mobile-menu__cats { display: flex; flex-direction: column; gap: 0; }
+    .mobile-cat { border-bottom: 1px solid var(--border); }
+    .mobile-cat__header {
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 16px 0; cursor: pointer;
+    }
+    .mobile-cat__header span {
+      font-size: 14px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+    }
+    .mobile-cat__arrow { font-size: 12px; transition: transform 0.2s; }
+    .mobile-cat.is-open .mobile-cat__arrow { transform: rotate(180deg); }
+    .mobile-cat__sub {
+      display: none; padding: 0 0 16px 16px;
+      flex-direction: column; gap: 12px;
+    }
+    .mobile-cat.is-open .mobile-cat__sub { display: flex; }
+    .mobile-cat__sub a {
+      font-size: 14px; color: var(--dark);
+      letter-spacing: 0.3px;
+    }
+    .mobile-menu__actions {
+      display: flex; gap: 16px; margin-top: 32px;
+      padding-top: 24px; border-top: 1px solid var(--border);
+    }
+    .mobile-menu__actions a {
+      font-size: 13px; font-weight: 500;
+      letter-spacing: 0.5px; color: var(--dark);
+    }
+
+    /* =============================================
+       HERO SECTION
+    ============================================= */
+    .hero {
+      position: relative;
+      height: 870px;
+      overflow: hidden;
+      background: #1a1512;
+      margin-top: calc(-1 * var(--header-h)); /* slide up behind transparent header */
+      z-index: 0;
+    }
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://www.figma.com/api/mcp/asset/1390881c-4bb3-4ca4-bb8e-249d7d834a67');
+      background-size: cover;
+      background-position: center 65%;
+      background-repeat: no-repeat;
+      opacity: 0.92;
+    }
+    .hero__content {
+      position: absolute;
+      left: var(--side); bottom: 140px;
+    }
+    .hero__tag {
+      font-size: 20px; font-weight: 600;
+      color: #fff; letter-spacing: 1.4px;
+      margin-bottom: 12px;
+    }
+    .hero__title {
+      font-size: 48px; font-weight: 700;
+      color: #fff; letter-spacing: 1.4px;
+      line-height: 1.15;
+      max-width: 400px;
+      margin-bottom: 36px;
+    }
+    .hero__btn {
+      display: inline-flex; align-items: center;
+      justify-content: center;
+      background: #fff; color: var(--dark);
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 1.4px;
+      padding: 16px 70px;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+    }
+    .hero__btn:hover { background: var(--dark); color: #fff; }
+
+    /* =============================================
+       FEATURED COLLECTION (AXIS)
+    ============================================= */
+    .featured-collection {
+      display: flex;
+      height: 780px;
+      overflow: hidden;
+    }
+    .featured-collection__img {
+      flex-shrink: 0;
+      width: 598px;
+      margin-left: var(--side);
+      margin-top: 60px;
+      margin-bottom: 60px;
+      overflow: hidden;
+    }
+    .featured-collection__img img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .featured-collection__text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 0 0 130px;
+    }
+    .featured-collection__tag {
+      font-size: 11px; font-weight: 900;
+      letter-spacing: 3.5px; color: var(--pink);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .featured-collection__title {
+      font-size: 56px; font-weight: 600;
+      color: var(--dark); line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .featured-collection__desc {
+      font-size: 16px; line-height: 26px;
+      color: var(--medium); margin-bottom: 36px;
+      max-width: 400px;
+    }
+    .btn-dark {
+      display: inline-flex; align-items: center;
+      justify-content: center;
+      background: #000; color: var(--light-cream);
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 1.4px;
+      width: 160px; height: 48px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-dark:hover { background: var(--dark); }
+
+    /* =============================================
+       SHOP BY CATEGORY
+    ============================================= */
+    .shop-cats {
+      padding: 80px var(--side) 60px;
+      background: #fff;
+    }
+    .shop-cats__header {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; margin-bottom: 28px;
+    }
+    .shop-cats__eyebrow {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 3.5px; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .shop-cats__title {
+      font-size: 40px; font-weight: 600;
+      color: var(--dark); line-height: 1;
+    }
+    .shop-cats__view-all {
+      font-size: 13px; font-weight: 500;
+      color: var(--dark); padding-bottom: 2px;
+      border-bottom: 1px solid var(--dark);
+    }
+    .shop-cats__grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 24px;
+    }
+    .cat-card { cursor: pointer; }
+    .cat-card__img {
+      width: 100%;
+      aspect-ratio: 197/237;
+      overflow: hidden;
+      background: var(--gray);
+      margin-bottom: 14px;
+    }
+    .cat-card__img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .cat-card:hover .cat-card__img img { transform: scale(1.04); }
+    .cat-card__name {
+      font-size: 16px; font-weight: 600;
+      color: var(--dark);
+    }
+
+    /* =============================================
+       NEWSLETTER
+    ============================================= */
+    .newsletter {
+      padding: 80px var(--side);
+      background: #fff;
+      text-align: center;
+    }
+    .newsletter__eyebrow {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 3.5px; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+    .newsletter__title {
+      font-size: 40px; font-weight: 600;
+      color: var(--dark); margin-bottom: 16px;
+    }
+    .newsletter__subtitle {
+      font-size: 15px; color: var(--medium);
+      line-height: 1.6; margin-bottom: 36px;
+      max-width: 600px; margin-left: auto; margin-right: auto;
+    }
+    .newsletter__form {
+      display: flex; justify-content: center; gap: 0;
+    }
+    .newsletter__input {
+      border: 1px solid var(--border);
+      padding: 0 15px;
+      font-size: 14px; color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      outline: none; background: #fff;
+      height: 44px; width: 380px;
+    }
+    .newsletter__submit {
+      background: var(--dark); color: var(--light-cream);
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 1.4px;
+      height: 44px; width: 148px;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .newsletter__submit:hover { opacity: 0.85; }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    .site-footer {
+      background: #fff;
+      padding: 60px var(--side) 0;
+      border-top: 1px solid transparent;
+    }
+    .footer__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      gap: 40px;
+      padding-bottom: 60px;
+    }
+    .footer__brand-name {
+      font-size: 20px; font-weight: 600;
+      letter-spacing: 3px; margin-bottom: 10px;
+    }
+    .footer__brand-desc {
+      font-size: 14px; line-height: 22px;
+      color: var(--dark); max-width: 200px;
+    }
+    .footer__col-title {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 3.5px; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .footer__col-links {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .footer__col-links a {
+      font-size: 14px; color: var(--dark);
+      line-height: 1.4;
+      transition: text-decoration 0.1s;
+    }
+    .footer__col-links a:hover { text-decoration: underline; }
+    .footer__bottom {
+      border-top: 1px solid #000;
+      padding: 16px 0;
+      display: flex; justify-content: space-between;
+      align-items: center;
+    }
+    .footer__copy {
+      font-size: 12px; color: var(--dark);
+    }
+    .footer__legal {
+      font-size: 12px; color: var(--dark);
+      letter-spacing: 0.5px;
+    }
+
+    /* =============================================
+       NAV BACKDROP (blur behind dropdowns)
+    ============================================= */
+    .nav-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+      z-index: 998; /* just below mega-dropdown (999) */
+      pointer-events: none;
+    }
+    body.nav-open .nav-backdrop {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* =============================================
+       SEARCH OVERLAY
+    ============================================= */
+    .search-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1100;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 140px;
+    }
+    .search-overlay.is-open { display: flex; }
+    .search-box {
+      background: #fff; width: 600px;
+      padding: 24px; position: relative;
+    }
+    .search-box input {
+      width: 100%; border: none;
+      border-bottom: 1px solid var(--border);
+      font-size: 18px; font-family: 'Inter', sans-serif;
+      padding: 8px 0; outline: none; color: var(--dark);
+    }
+    .search-box input::placeholder { color: var(--muted); }
+    .search-close {
+      position: absolute; top: 12px; right: 16px;
+      font-size: 20px; cursor: pointer; color: var(--muted);
+    }
+
+    /* =============================================
+       RESPONSIVE — TABLET (≤1200px)
+    ============================================= */
+    @media (max-width: 1200px) {
+      :root { --side: 40px; }
+      .nav-cats__list { gap: 48px; }
+      .featured-collection__img { width: 45%; }
+      .featured-collection__text { padding-left: 60px; }
+      .featured-collection__title { font-size: 44px; }
+      .shop-cats__grid { grid-template-columns: repeat(3, 1fr); }
+      .footer__inner { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    /* =============================================
+       RESPONSIVE — MOBILE (≤768px)
+    ============================================= */
+    @media (max-width: 768px) {
+      :root { --side: 20px; }
+
+      /* Hide desktop nav elements */
+      .nav-cats, .nav-actions, .nav-search { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-top { height: 68px; }
+      /* Announcement bar on mobile */
+      .announcement-bar p {
+        animation: ticker 20s linear infinite;
+        font-size: 10px;
+      }
+
+      /* Hero */
+      .hero { height: 100svh; min-height: 500px; }
+      .hero__content { left: var(--side); bottom: 100px; right: var(--side); }
+      .hero__title { font-size: 32px; }
+      .hero__tag { font-size: 16px; }
+      .hero__btn { padding: 14px 40px; }
+
+      /* Featured collection */
+      .featured-collection {
+        flex-direction: column;
+        height: auto;
+      }
+      .featured-collection__img {
+        width: calc(100% - 2 * var(--side));
+        height: 320px;
+        margin: 40px var(--side) 0;
+      }
+      .featured-collection__text {
+        padding: 32px var(--side) 48px;
+      }
+      .featured-collection__title { font-size: 36px; }
+      .featured-collection__desc { font-size: 14px; }
+
+      /* Shop by category */
+      .shop-cats { padding: 48px var(--side) 48px; }
+      .shop-cats__title { font-size: 28px; }
+      .shop-cats__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .cat-card__name { font-size: 14px; }
+
+      /* Newsletter */
+      .newsletter { padding: 48px var(--side); }
+      .newsletter__title { font-size: 28px; }
+      .newsletter__form { flex-direction: column; align-items: stretch; }
+      .newsletter__input { width: 100%; }
+      .newsletter__submit { width: 100%; }
+
+      /* Footer */
+      .footer__inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+      .footer__bottom {
+        flex-direction: column;
+        gap: 8px; text-align: center;
+      }
+      .site-footer { padding: 40px var(--side) 0; }
+    }
+
+    /* =============================================
+       RESPONSIVE — SMALL MOBILE (≤480px)
+    ============================================= */
+    @media (max-width: 480px) {
+      .nav-logo { font-size: 28px; }
+      .hero__title { font-size: 26px; }
+      .shop-cats__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .footer__inner { grid-template-columns: 1fr; gap: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- =============================================
+     SITE HEADER
+============================================= -->
+<header class="site-header" id="site-header">
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="announcement-bar__inner">
+      <p>Complimentary shipping on orders over $150&nbsp;&nbsp;&nbsp;◆&nbsp;&nbsp;&nbsp;Jewelry that tells your story — Shop now&nbsp;&nbsp;&nbsp;◆&nbsp;&nbsp;&nbsp;Free engraving on personalized pieces&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Complimentary shipping on orders over $150&nbsp;&nbsp;&nbsp;◆&nbsp;&nbsp;&nbsp;Jewelry that tells your story — Shop now&nbsp;&nbsp;&nbsp;◆&nbsp;&nbsp;&nbsp;Free engraving on personalized pieces</p>
+    </div>
+  </div>
+
+  <!-- Main Nav -->
+  <div class="nav-wrapper" id="nav-wrapper">
+
+    <!-- Top Row: Logo / Search / Icons -->
+    <div class="nav-top">
+      <a href="/" class="nav-logo">ADRIYA</a>
+
+      <!-- Search (centered) -->
+      <button class="nav-search" id="search-toggle" aria-label="Search">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="11" r="7" stroke="#fff" stroke-width="1.5"/>
+          <path d="M16.5 16.5L21 21" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span>Search</span>
+      </button>
+
+      <!-- Icons -->
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="Wishlist">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 22.5C14 22.5 3.5 16.5 3.5 10.5C3.5 7.46 5.96 5 9 5C10.9 5 12.6 5.95 13.6 7.4L14 8L14.4 7.4C15.4 5.95 17.1 5 19 5C22.04 5 24.5 7.46 24.5 10.5C24.5 16.5 14 22.5 14 22.5Z" stroke="#fff" stroke-width="1.5"/>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="Account">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="10" r="4.5" stroke="#fff" stroke-width="1.5"/>
+            <path d="M5 24C5 19.58 9.03 16 14 16C18.97 16 23 19.58 23 24" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="Cart">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.5 3.5H6.5L9.1 16.5H21.5L24.5 8H6.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="11" cy="20" r="1.5" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="20" cy="20" r="1.5" stroke="#fff" stroke-width="1.5"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Hamburger (mobile only) -->
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Categories Bar -->
+    <nav class="nav-cats" id="nav-cats">
+      <ul class="nav-cats__list">
+
+        <!-- NEW IN -->
+        <li class="nav-cats__item" data-cat="new-in">
+          <a href="#">New In</a>
+          <div class="mega-dropdown">
+            <div class="dropdown-inner">
+              <div style="margin-right:80px;">
+                <p class="dd-cat-heading">NEW IN</p>
+                <div style="display:flex;gap:60px;">
+                  <div class="dd-col">
+                    <p class="dd-col-title">Category</p>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Bestsellers</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">New collection</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">New brooch</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">New bracelets</span></div>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">&nbsp;</p>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">New rings</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">New necklaces</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">New earrings</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="dd-banners">
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">15% off select bracelets when<br>you buy 2 brooches</p>
+                </div>
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">Find The Perfect Gift</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- BROOCH -->
+        <li class="nav-cats__item" data-cat="brooch">
+          <a href="#">Brooch</a>
+          <div class="mega-dropdown">
+            <div class="dropdown-inner">
+              <div style="margin-right:80px;">
+                <p class="dd-cat-heading">BROOCH</p>
+                <div style="display:flex;gap:52px;">
+                  <div class="dd-col">
+                    <p class="dd-col-title">Category</p>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">All brooch</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Bestselling brooches</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Sale brooches up to 35% off</span></div>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Price</p>
+                    <p class="dd-filter">Under $50</p>
+                    <p class="dd-filter">$50 to $75</p>
+                    <p class="dd-filter">$75 to $100</p>
+                    <p class="dd-filter">$100 to $250</p>
+                    <p class="dd-filter">Over $250</p>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Material</p>
+                    <p class="dd-filter">Sterling silver</p>
+                    <p class="dd-filter">Gold</p>
+                    <p class="dd-filter">Rose gold - plated</p>
+                    <p class="dd-filter">White gold</p>
+                    <p class="dd-filter">Gold - plated</p>
+                  </div>
+                </div>
+              </div>
+              <div class="dd-banners">
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">15% off select bracelets when<br>you buy 2 brooches</p>
+                </div>
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">Shop brooches</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- BRACELETS -->
+        <li class="nav-cats__item" data-cat="bracelets">
+          <a href="#">Bracelets</a>
+          <div class="mega-dropdown">
+            <div class="dropdown-inner">
+              <div style="margin-right:80px;">
+                <p class="dd-cat-heading">BRACELETS</p>
+                <div style="display:flex;gap:52px;">
+                  <div class="dd-col">
+                    <p class="dd-col-title">Category</p>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">All bracelets</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Adjustable bracelets</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Bestselling bracelets</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Sale bracelets up to 30% off</span></div>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Price</p>
+                    <p class="dd-filter">Under $50</p>
+                    <p class="dd-filter">$50 to $75</p>
+                    <p class="dd-filter">$75 to $100</p>
+                    <p class="dd-filter">$100 to $250</p>
+                    <p class="dd-filter">Over $250</p>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Material</p>
+                    <p class="dd-filter">Sterling silver</p>
+                    <p class="dd-filter">Gold</p>
+                    <p class="dd-filter">Rose gold - plated</p>
+                    <p class="dd-filter">White gold</p>
+                    <p class="dd-filter">Gold - plated</p>
+                  </div>
+                </div>
+              </div>
+              <div class="dd-banners">
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">15% off select bracelets when<br>you buy 2 brooches</p>
+                </div>
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">Shop bracelets</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- RINGS -->
+        <li class="nav-cats__item" data-cat="rings">
+          <a href="#">Rings</a>
+          <div class="mega-dropdown">
+            <div class="dropdown-inner">
+              <div style="margin-right:80px;">
+                <p class="dd-cat-heading">RINGS</p>
+                <div style="display:flex;gap:52px;">
+                  <div class="dd-col">
+                    <p class="dd-col-title">Category</p>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">All rings</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Heart rings</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Halo &amp; Solitaire rings</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Ring sets</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Sale rings up to 30% off</span></div>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Price</p>
+                    <p class="dd-filter">Under $50</p>
+                    <p class="dd-filter">$50 to $75</p>
+                    <p class="dd-filter">$75 to $100</p>
+                    <p class="dd-filter">$100 to $250</p>
+                    <p class="dd-filter">Over $250</p>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Material</p>
+                    <p class="dd-filter">Sterling silver</p>
+                    <p class="dd-filter">Gold</p>
+                    <p class="dd-filter">Rose gold - plated</p>
+                    <p class="dd-filter">White gold</p>
+                    <p class="dd-filter">Gold - plated</p>
+                  </div>
+                </div>
+              </div>
+              <div class="dd-banners">
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">15% off select bracelets when<br>you buy 2 brooches</p>
+                </div>
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">Shop rings</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- NECKLACES -->
+        <li class="nav-cats__item" data-cat="necklaces">
+          <a href="#">Necklaces</a>
+          <div class="mega-dropdown">
+            <div class="dropdown-inner">
+              <div style="margin-right:80px;">
+                <p class="dd-cat-heading">NECKLACES</p>
+                <div style="display:flex;gap:52px;">
+                  <div class="dd-col">
+                    <p class="dd-col-title">Category</p>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">All necklaces</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Heart necklaces</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Chain necklaces</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Pearl necklaces</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Bestselling necklaces</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Sale necklaces up to 30% off</span></div>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Price</p>
+                    <p class="dd-filter">Under $50</p>
+                    <p class="dd-filter">$50 to $75</p>
+                    <p class="dd-filter">$75 to $100</p>
+                    <p class="dd-filter">$100 to $250</p>
+                    <p class="dd-filter">Over $250</p>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Material</p>
+                    <p class="dd-filter">Sterling silver</p>
+                    <p class="dd-filter">Gold</p>
+                    <p class="dd-filter">Rose gold - plated</p>
+                    <p class="dd-filter">White gold</p>
+                    <p class="dd-filter">Gold - plated</p>
+                  </div>
+                </div>
+              </div>
+              <div class="dd-banners">
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">15% off select bracelets when<br>you buy 2 brooches</p>
+                </div>
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">Shop necklaces</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- EARRINGS -->
+        <li class="nav-cats__item" data-cat="earrings">
+          <a href="#">Earrings</a>
+          <div class="mega-dropdown">
+            <div class="dropdown-inner">
+              <div style="margin-right:80px;">
+                <p class="dd-cat-heading">EARRINGS</p>
+                <div style="display:flex;gap:52px;">
+                  <div class="dd-col">
+                    <p class="dd-col-title">Category</p>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">All earrings</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Heart earrings</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Pearl earrings</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Necklaces &amp; Earrings Sets</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Sale earrings up to 30% off</span></div>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Price</p>
+                    <p class="dd-filter">Under $50</p>
+                    <p class="dd-filter">$50 to $75</p>
+                    <p class="dd-filter">$75 to $100</p>
+                    <p class="dd-filter">$100 to $250</p>
+                    <p class="dd-filter">Over $250</p>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Material</p>
+                    <p class="dd-filter">Sterling silver</p>
+                    <p class="dd-filter">Gold</p>
+                    <p class="dd-filter">Rose gold - plated</p>
+                    <p class="dd-filter">White gold</p>
+                    <p class="dd-filter">Gold - plated</p>
+                  </div>
+                </div>
+              </div>
+              <div class="dd-banners">
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">15% off select bracelets when<br>you buy 2 brooches</p>
+                </div>
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">Shop earrings</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- GIFTS -->
+        <li class="nav-cats__item" data-cat="gifts">
+          <a href="#">Gifts</a>
+          <div class="mega-dropdown">
+            <div class="dropdown-inner">
+              <div style="margin-right:48px;">
+                <p class="dd-cat-heading">GIFTS</p>
+                <div style="display:flex;gap:40px;">
+                  <div class="dd-col">
+                    <p class="dd-col-title">Category</p>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Most - gifted</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Gift sets</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Birth month gifts</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Gift cards</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Jewelry boxes</span></div>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Theme</p>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Family &amp; friends</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Travel &amp; hobbies</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Love</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Nature &amp; celestial</span></div>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Occasion</p>
+                    <p class="dd-filter">Birthday gifts</p>
+                    <p class="dd-filter">Anniversary gifts</p>
+                    <p class="dd-filter">All Occasions</p>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Recipient</p>
+                    <p class="dd-filter">Gifts for mom</p>
+                    <p class="dd-filter">Gifts for partner</p>
+                    <p class="dd-filter">Gifts for friend</p>
+                    <p class="dd-filter">Gifts for daughter</p>
+                    <p class="dd-filter">Gifts for sister</p>
+                    <p class="dd-filter">Jewelry for men</p>
+                  </div>
+                  <div class="dd-col">
+                    <p class="dd-col-title">Price</p>
+                    <p class="dd-filter">Under $50</p>
+                    <p class="dd-filter">$50 to $75</p>
+                    <p class="dd-filter">$75 to $100</p>
+                    <p class="dd-filter">$100 to $250</p>
+                    <p class="dd-filter">Over $250</p>
+                  </div>
+                </div>
+              </div>
+              <div class="dd-banners">
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">15% off select bracelets when<br>you buy 2 brooches</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- COLLECTIONS -->
+        <li class="nav-cats__item" data-cat="collections">
+          <a href="#">Collections</a>
+          <div class="mega-dropdown">
+            <div class="dropdown-inner">
+              <div style="margin-right:80px;">
+                <p class="dd-cat-heading">COLLECTIONS</p>
+                <div style="display:flex;gap:52px;">
+                  <div class="dd-col">
+                    <p class="dd-col-title">Category</p>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Adria Moments</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Adriya Heart</span></div>
+                    <div class="dd-item"><div class="dd-item__thumb"><img src="https://www.figma.com/api/mcp/asset/df5fe206-ef4f-46bb-a145-afc31cf8c9e2" alt=""></div><span class="dd-item__label">Adria Timeless</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="dd-banners">
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">15% off select bracelets when<br>you buy 2 brooches</p>
+                </div>
+                <div class="dd-banner">
+                  <div class="dd-banner__img"></div>
+                  <p class="dd-banner__caption">Shop collections</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </nav>
+  </div><!-- end .nav-wrapper -->
+</header>
+
+<!-- Backdrop behind mega-dropdowns -->
+<div class="nav-backdrop" id="nav-backdrop"></div>
+
+<!-- =============================================
+     MOBILE MENU OVERLAY
+============================================= -->
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Navigation menu">
+  <div class="mobile-menu__top">
+    <a href="/" class="mobile-menu__logo">ADRIYA</a>
+    <button class="mobile-menu__close" id="mobile-menu-close" aria-label="Close menu">✕</button>
+  </div>
+  <div class="mobile-menu__cats">
+    <div class="mobile-cat">
+      <div class="mobile-cat__header" data-toggle="new-in">
+        <span>New In</span><span class="mobile-cat__arrow">▾</span>
+      </div>
+      <div class="mobile-cat__sub" id="sub-new-in">
+        <a href="#">Bestsellers</a><a href="#">New collection</a>
+        <a href="#">New brooch</a><a href="#">New bracelets</a>
+        <a href="#">New rings</a><a href="#">New necklaces</a>
+        <a href="#">New earrings</a>
+      </div>
+    </div>
+    <div class="mobile-cat">
+      <div class="mobile-cat__header" data-toggle="brooch">
+        <span>Brooch</span><span class="mobile-cat__arrow">▾</span>
+      </div>
+      <div class="mobile-cat__sub" id="sub-brooch">
+        <a href="#">All brooch</a><a href="#">Bestselling brooches</a>
+        <a href="#">Sale brooches up to 35% off</a>
+      </div>
+    </div>
+    <div class="mobile-cat">
+      <div class="mobile-cat__header" data-toggle="bracelets">
+        <span>Bracelets</span><span class="mobile-cat__arrow">▾</span>
+      </div>
+      <div class="mobile-cat__sub" id="sub-bracelets">
+        <a href="#">All bracelets</a><a href="#">Adjustable bracelets</a>
+        <a href="#">Bestselling bracelets</a><a href="#">Sale bracelets up to 30% off</a>
+      </div>
+    </div>
+    <div class="mobile-cat">
+      <div class="mobile-cat__header" data-toggle="rings">
+        <span>Rings</span><span class="mobile-cat__arrow">▾</span>
+      </div>
+      <div class="mobile-cat__sub" id="sub-rings">
+        <a href="#">All rings</a><a href="#">Heart rings</a>
+        <a href="#">Halo &amp; Solitaire rings</a><a href="#">Ring sets</a>
+        <a href="#">Sale rings up to 30% off</a>
+      </div>
+    </div>
+    <div class="mobile-cat">
+      <div class="mobile-cat__header" data-toggle="necklaces">
+        <span>Necklaces</span><span class="mobile-cat__arrow">▾</span>
+      </div>
+      <div class="mobile-cat__sub" id="sub-necklaces">
+        <a href="#">All necklaces</a><a href="#">Heart necklaces</a>
+        <a href="#">Chain necklaces</a><a href="#">Pearl necklaces</a>
+        <a href="#">Sale necklaces up to 30% off</a>
+      </div>
+    </div>
+    <div class="mobile-cat">
+      <div class="mobile-cat__header" data-toggle="earrings">
+        <span>Earrings</span><span class="mobile-cat__arrow">▾</span>
+      </div>
+      <div class="mobile-cat__sub" id="sub-earrings">
+        <a href="#">All earrings</a><a href="#">Heart earrings</a>
+        <a href="#">Pearl earrings</a><a href="#">Sale earrings up to 30% off</a>
+      </div>
+    </div>
+    <div class="mobile-cat">
+      <div class="mobile-cat__header" data-toggle="gifts">
+        <span>Gifts</span><span class="mobile-cat__arrow">▾</span>
+      </div>
+      <div class="mobile-cat__sub" id="sub-gifts">
+        <a href="#">Most - gifted</a><a href="#">Gift sets</a>
+        <a href="#">Birth month gifts</a><a href="#">Gift cards</a>
+        <a href="#">Jewelry boxes</a>
+      </div>
+    </div>
+    <div class="mobile-cat">
+      <div class="mobile-cat__header" data-toggle="collections">
+        <span>Collections</span><span class="mobile-cat__arrow">▾</span>
+      </div>
+      <div class="mobile-cat__sub" id="sub-collections">
+        <a href="#">Adria Moments</a><a href="#">Adriya Heart</a>
+        <a href="#">Adria Timeless</a>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu__actions">
+    <a href="#">Search</a>
+    <a href="#">Account</a>
+    <a href="#">Wishlist</a>
+    <a href="#">Cart</a>
+  </div>
+</div>
+
+<!-- =============================================
+     SEARCH OVERLAY
+============================================= -->
+<div class="search-overlay" id="search-overlay" role="dialog" aria-label="Search">
+  <div class="search-box">
+    <input type="text" placeholder="Search jewelry, collections..." id="search-input" autocomplete="off" />
+    <button class="search-close" id="search-close" aria-label="Close search">✕</button>
+  </div>
+</div>
+
+<!-- =============================================
+     MAIN CONTENT
+============================================= -->
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__content">
+      <p class="hero__tag">More than a gift</p>
+      <h1 class="hero__title">Where feelings take form.</h1>
+      <a href="#" class="hero__btn">SHOP</a>
+    </div>
+  </section>
+
+  <!-- FEATURED COLLECTION: AXIS -->
+  <section class="featured-collection">
+    <div class="featured-collection__img">
+      <img
+        src="https://www.figma.com/api/mcp/asset/bc7d844d-5bb2-4d12-8caf-0c15d1ac2619"
+        alt="The Axis Collection — Adriya jewelry"
+        loading="lazy"
+      />
+    </div>
+    <div class="featured-collection__text">
+      <p class="featured-collection__tag">The Axis Collection</p>
+      <h2 class="featured-collection__title">Geometry,<br>softly done.</h2>
+      <p class="featured-collection__desc">Clean lines and honest metals — Axis is our study of what a ring, a chain, a cuff can be when nothing is added.</p>
+      <a href="#" class="btn-dark">SHOP AXIS</a>
+    </div>
+  </section>
+
+  <!-- SHOP BY CATEGORY -->
+  <section class="shop-cats">
+    <div class="shop-cats__header">
+      <div>
+        <p class="shop-cats__eyebrow">Find Your Form</p>
+        <h2 class="shop-cats__title">Shop by category</h2>
+      </div>
+      <a href="#" class="shop-cats__view-all">View all</a>
+    </div>
+    <div class="shop-cats__grid">
+      <div class="cat-card">
+        <div class="cat-card__img">
+          <img src="https://www.figma.com/api/mcp/asset/9b920aaf-61de-4f03-a003-0dc959544f87" alt="New In" loading="lazy" />
+        </div>
+        <p class="cat-card__name">New In</p>
+      </div>
+      <div class="cat-card">
+        <div class="cat-card__img">
+          <img src="https://www.figma.com/api/mcp/asset/346be585-a824-411d-b49c-7627c783ddd5" alt="Charms" loading="lazy" />
+        </div>
+        <p class="cat-card__name">Charms</p>
+      </div>
+      <div class="cat-card">
+        <div class="cat-card__img">
+          <img src="https://www.figma.com/api/mcp/asset/b14ea560-b242-4972-ae63-87d4033bb6bf" alt="Bracelets" loading="lazy" />
+        </div>
+        <p class="cat-card__name">Bracelets</p>
+      </div>
+      <div class="cat-card">
+        <div class="cat-card__img">
+          <img src="https://www.figma.com/api/mcp/asset/e6d9bdaf-782f-4d44-aa03-7d039f9c005d" alt="Rings" loading="lazy" />
+        </div>
+        <p class="cat-card__name">Rings</p>
+      </div>
+      <div class="cat-card">
+        <div class="cat-card__img">
+          <img src="https://www.figma.com/api/mcp/asset/27bf41a5-bff4-4998-8ace-b7a5250efcce" alt="Necklaces" loading="lazy" />
+        </div>
+        <p class="cat-card__name">Necklaces</p>
+      </div>
+      <div class="cat-card">
+        <div class="cat-card__img">
+          <img src="https://www.figma.com/api/mcp/asset/f7fede74-fc35-46b2-a543-cf39dc622d8f" alt="Earrings" loading="lazy" />
+        </div>
+        <p class="cat-card__name">Earrings</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <p class="newsletter__eyebrow">Be the First</p>
+    <h2 class="newsletter__title">Letters from the atelier</h2>
+    <p class="newsletter__subtitle">New pieces, quiet offers, and the occasional note on craft. We write once a month — and never more.</p>
+    <form class="newsletter__form" onsubmit="handleSubscribe(event)">
+      <input class="newsletter__input" type="email" placeholder="your@email.com" required aria-label="Email address" />
+      <button class="newsletter__submit" type="submit">SUBSCRIBE</button>
+    </form>
+  </section>
+
+</main>
+
+<!-- =============================================
+     FOOTER
+============================================= -->
+<footer class="site-footer">
+  <div class="footer__inner">
+    <div>
+      <p class="footer__brand-name">ADRIYA</p>
+      <p class="footer__brand-desc">Modern heirloom jewelry made in small series.</p>
+    </div>
+    <div>
+      <p class="footer__col-title">Shop</p>
+      <div class="footer__col-links">
+        <a href="#">New Arrivals</a>
+        <a href="#">Charms</a>
+        <a href="#">Bracelets</a>
+        <a href="#">Rings</a>
+        <a href="#">Necklaces</a>
+        <a href="#">Earrings</a>
+      </div>
+    </div>
+    <div>
+      <p class="footer__col-title">Gifts &amp; Services</p>
+      <div class="footer__col-links">
+        <a href="#">The Gift Edit</a>
+        <a href="#">Personalization</a>
+        <a href="#">Engraving</a>
+        <a href="#">Gift Cards</a>
+      </div>
+    </div>
+    <div>
+      <p class="footer__col-title">Help</p>
+      <div class="footer__col-links">
+        <a href="#">Contact Us</a>
+        <a href="#">Shipping</a>
+        <a href="#">Returns</a>
+        <a href="#">Size Guide</a>
+      </div>
+    </div>
+    <div>
+      <p class="footer__col-title">About</p>
+      <div class="footer__col-links">
+        <a href="#">Our Story</a>
+        <a href="#">Craftsmanship</a>
+        <a href="#">Materials</a>
+        <a href="#">Sustainability</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <p class="footer__copy">© 2026 Adriya Jewelry — Handfinished in Armenia</p>
+    <p class="footer__legal">Privacy &nbsp;&nbsp; Terms &nbsp;&nbsp; Cookies &nbsp;&nbsp; Accessibility</p>
+  </div>
+</footer>
+
+<!-- =============================================
+     JAVASCRIPT
+============================================= -->
+<script>
+  /* ---- HEADER: always white, no scroll tracking needed ---- */
+
+  /* ---- NAV BACKDROP ---- */
+  document.querySelectorAll('.nav-cats__item').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      document.body.classList.add('nav-open');
+    });
+    item.addEventListener('mouseleave', () => {
+      document.body.classList.remove('nav-open');
+    });
+  });
+
+  /* ---- MOBILE MENU ---- */
+  const mobileMenu = document.getElementById('mobile-menu');
+  const hamburger = document.getElementById('nav-hamburger');
+  const mobileClose = document.getElementById('mobile-menu-close');
+
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  });
+  mobileClose.addEventListener('click', () => {
+    mobileMenu.classList.remove('is-open');
+    document.body.style.overflow = '';
+  });
+
+  // Mobile category accordion
+  document.querySelectorAll('.mobile-cat__header').forEach(header => {
+    header.addEventListener('click', () => {
+      const parent = header.closest('.mobile-cat');
+      const isOpen = parent.classList.contains('is-open');
+      // Close all
+      document.querySelectorAll('.mobile-cat').forEach(c => c.classList.remove('is-open'));
+      // Toggle clicked
+      if (!isOpen) parent.classList.add('is-open');
+    });
+  });
+
+  /* ---- SEARCH OVERLAY ---- */
+  const searchOverlay = document.getElementById('search-overlay');
+  const searchToggle = document.getElementById('search-toggle');
+  const searchClose = document.getElementById('search-close');
+  const searchInput = document.getElementById('search-input');
+
+  searchToggle.addEventListener('click', () => {
+    searchOverlay.classList.add('is-open');
+    setTimeout(() => searchInput.focus(), 100);
+  });
+  searchClose.addEventListener('click', () => {
+    searchOverlay.classList.remove('is-open');
+  });
+  searchOverlay.addEventListener('click', (e) => {
+    if (e.target === searchOverlay) searchOverlay.classList.remove('is-open');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      searchOverlay.classList.remove('is-open');
+      mobileMenu.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+  });
+
+  /* ---- NEWSLETTER ---- */
+  function handleSubscribe(e) {
+    e.preventDefault();
+    const input = e.target.querySelector('input');
+    const btn = e.target.querySelector('button');
+    btn.textContent = 'SUBSCRIBED ✓';
+    btn.style.background = '#4a3f38';
+    input.value = '';
+    setTimeout(() => {
+      btn.textContent = 'SUBSCRIBE';
+      btn.style.background = '';
+    }, 3000);
+  }
+
+  /* ---- CLOSE DROPDOWN ON OUTSIDE CLICK (mobile fallback) ---- */
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-cats')) {
+      // dropdowns close naturally via CSS :hover; nothing needed for desktop
+    }
+  });
+</script>
+
+</body>
+</html>
